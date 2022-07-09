@@ -29,8 +29,13 @@ export const DeleteBtn = styled.button`
   color: ${p => p.theme.colors.textColorMain};
   background-color: ${p => p.theme.colors.btnBgc};
   border-radius: 10px;
+  border: none;
+  outline: none;
 
   :hover {
     background-color: ${p => p.theme.colors.btnBgcAccent};
+  }
+  :focus {
+    box-shadow: ${p => p.theme.shadow.formFocusShadow};
   }
 `
