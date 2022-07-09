@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { Container } from 'components';
 import { nanoid } from 'nanoid';
+import { Container, ContactForm, Filter, ContactList } from 'components';
 import { Page } from './App.styled';
 
 export class App extends Component {
@@ -12,30 +12,15 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
+  addContacts = (name, number) => {
     const newContact = {
       id: nanoid(),
-      name: this.state.name,
-      number: this.state.number,
+      name,
+      number,
     };
-
     this.setState(prev => ({ contacts: [newContact, ...prev.contacts] }));
-    this.reset();
-  };
-
-  reset = () => {
-    this.setState({ name: '', number: '' });
-  };
-
-  handleInputChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
   };
 
   handleFilterChange = e => {
@@ -52,58 +37,18 @@ export class App extends Component {
   };
 
   render() {
-    const visibleContacts = this.handleFilterByName();
+    const { filter } = this.state;
+    const { addContacts, handleFilterChange, handleFilterByName } = this;
+    const visibleContacts = handleFilterByName();
+
     return (
       <Page>
         <Container>
-          <p>Phonebook</p>
-          <form
-            style={{ display: 'flex', flexDirection: 'column' }}
-            action="#"
-            onSubmit={this.handleSubmit}
-          >
-            <label htmlFor="userName">Name</label>
-            <input
-              type="text"
-              name="name"
-              id="userName"
-              value={this.state.name}
-              onChange={this.handleInputChange}
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-            <label htmlFor="userNumber">Number</label>
-            <input
-              type="tel"
-              name="number"
-              id="userNumber"
-              value={this.state.number}
-              onChange={this.handleInputChange}
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-            />
-            <button type="submit">Add contact</button>
-          </form>
-          <p>Contacts</p>
-          <label htmlFor="filter">Find contacts by name</label>
-          <input
-            type="text"
-            id="filter"
-            name="filter"
-            value={this.state.filter}
-            onChange={this.handleFilterChange}
-          />
-          <ul>
-            {visibleContacts.map(el => {
-              return (
-                <li key={el.name}>
-                  {el.name}: {el.number}
-                </li>
-              );
-            })}
-          </ul>
+          <h1>Phonebook</h1>
+          <ContactForm onSubmit={addContacts} />
+          <h2>Contacts</h2>
+          <Filter value={filter} onChange={handleFilterChange} />
+          <ContactList contacts={visibleContacts} />
         </Container>
       </Page>
     );
