@@ -28,6 +28,12 @@ export class App extends Component {
     this.setState(prev => ({ contacts: [newContact, ...prev.contacts] }));
   };
 
+  deleteContacts = id => {
+    this.setState(prev => ({
+      contacts: prev.contacts.filter(el => el.id !== id),
+    }));
+  };
+
   handleFilterChange = e => {
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
@@ -43,7 +49,12 @@ export class App extends Component {
 
   render() {
     const { filter } = this.state;
-    const { addContacts, handleFilterChange, handleFilterByName } = this;
+    const {
+      addContacts,
+      handleFilterChange,
+      handleFilterByName,
+      deleteContacts,
+    } = this;
     const visibleContacts = handleFilterByName();
 
     return (
@@ -53,7 +64,7 @@ export class App extends Component {
           <ContactForm onSubmit={addContacts} />
           <h2>Contacts</h2>
           <Filter value={filter} onChange={handleFilterChange} />
-          <ContactList contacts={visibleContacts} />
+          <ContactList contacts={visibleContacts} onDelete={deleteContacts} />
         </Container>
       </Page>
     );
