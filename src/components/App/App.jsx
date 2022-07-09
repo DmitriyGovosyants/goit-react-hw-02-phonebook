@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { Container, ContactForm, Filter, ContactList } from 'components';
-import { Page } from './App.styled';
+import { Section, MainTitle, Title } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -14,7 +14,7 @@ export class App extends Component {
     filter: '',
   };
 
-  addContacts = (name, number) => {
+  addContact = (name, number) => {
     const { contacts } = this.state;
     if (contacts.find(el => el.name === name)) {
       return alert(`${name} is already in contacts`);
@@ -28,7 +28,7 @@ export class App extends Component {
     this.setState(prev => ({ contacts: [newContact, ...prev.contacts] }));
   };
 
-  deleteContacts = id => {
+  deleteContact = id => {
     this.setState(prev => ({
       contacts: prev.contacts.filter(el => el.id !== id),
     }));
@@ -50,23 +50,23 @@ export class App extends Component {
   render() {
     const { filter } = this.state;
     const {
-      addContacts,
+      addContact,
       handleFilterChange,
       handleFilterByName,
-      deleteContacts,
+      deleteContact,
     } = this;
     const visibleContacts = handleFilterByName();
 
     return (
-      <Page>
+      <Section>
         <Container>
-          <h1>Phonebook</h1>
-          <ContactForm onSubmit={addContacts} />
-          <h2>Contacts</h2>
+          <MainTitle>Phonebook</MainTitle>
+          <ContactForm onSubmit={addContact} />
+          <Title>Contacts</Title>
           <Filter value={filter} onChange={handleFilterChange} />
-          <ContactList contacts={visibleContacts} onDelete={deleteContacts} />
+          <ContactList contacts={visibleContacts} onDelete={deleteContact} />
         </Container>
-      </Page>
+      </Section>
     );
   }
 }
