@@ -29,4 +29,8 @@ export const DeleteBtn = styled.button`
   color: ${p => p.theme.colors.textColorMain};
   background-color: ${p => p.theme.colors.btnBgc};
   border-radius: 10px;
+
+  :hover {
+    background-color: ${p => p.theme.colors.btnBgcAccent};
+  }
 `
